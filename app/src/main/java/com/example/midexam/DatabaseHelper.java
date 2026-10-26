@@ -23,7 +23,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create table with student_id as UNIQUE
         String createTableQuery = "CREATE TABLE " + TABLE_NAME + " ("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_STUDENT_ID + " TEXT UNIQUE NOT NULL, "
@@ -37,8 +36,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
-
-    // Method to check if Student ID already exists
     public boolean checkStudentIdExists(String studentId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_STUDENT_ID + " = ?", new String[]{studentId});
@@ -46,8 +43,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return exists;
     }
-
-    // ADD: Insert new student record
     public boolean insertStudent(String name, String studentId, String major) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -58,8 +53,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_NAME, null, values);
         return result != -1;
     }
-
-    // EDIT: Update existing student record by Student ID
     public boolean updateStudent(String name, String studentId, String major) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -69,15 +62,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int rowsAffected = db.update(TABLE_NAME, values, COLUMN_STUDENT_ID + " = ?", new String[]{studentId});
         return rowsAffected > 0;
     }
-
-    // DELETE: Delete student record by Student ID
     public boolean deleteStudent(String studentId) {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsDeleted = db.delete(TABLE_NAME, COLUMN_STUDENT_ID + " = ?", new String[]{studentId});
         return rowsDeleted > 0;
     }
-
-    // VIEW: Retrieve all student records
     public Cursor getAllStudents() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);

@@ -17,7 +17,6 @@
         android:layout_gravity="center"
         android:layout_marginBottom="20dp" />
 
-    <!-- Student Name Input -->
     <EditText
         android:id="@+id/etStudentName"
         android:layout_width="match_parent"
@@ -27,7 +26,6 @@
         android:autofillHints="name"
         android:layout_marginBottom="16dp" />
 
-    <!-- Student ID Input -->
     <EditText
         android:id="@+id/etStudentId"
         android:layout_width="match_parent"
@@ -37,7 +35,6 @@
         android:autofillHints="username"
         android:layout_marginBottom="16dp" />
 
-    <!-- Major Spinner -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,7 +49,6 @@
         android:minHeight="48dp"
         android:layout_marginBottom="20dp" />
 
-    <!-- Action Buttons - Row 1 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -100,7 +96,6 @@
             android:text="@string/btn_view" />
     </LinearLayout>
 
-    <!-- Student List View -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize views
         etStudentName = findViewById(R.id.etStudentName);
         etStudentId = findViewById(R.id.etStudentId);
         spinnerMajor = findViewById(R.id.spinnerMajor);
@@ -44,56 +43,41 @@ public class MainActivity extends AppCompatActivity {
         btnView = findViewById(R.id.btnView);
         listViewStudents = findViewById(R.id.listViewStudents);
 
-        // Initialize Database Helper
         dbHelper = new DatabaseHelper(this);
 
-        // Set up Spinner for Majors
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, majors);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMajor.setAdapter(spinnerAdapter);
 
-        // Set up ListView
         studentList = new ArrayList<>();
         listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, studentList);
         listViewStudents.setAdapter(listAdapter);
-
-        // Load existing data from database
         loadStudentData();
-
-        // ADD Button Listener
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addStudent();
             }
         });
-
-        // EDIT Button Listener
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editStudent();
             }
         });
-
-        // DELETE Button Listener
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteStudent();
             }
         });
-
-        // VIEW Button Listener
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewStudents();
             }
         });
-
-        // Click list item to auto-fill input fields for quick editing or deleting
         listViewStudents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -116,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    // ADD Student
     private void addStudent() {
         String name = etStudentName.getText().toString().trim();
         String studentId = etStudentId.getText().toString().trim();
@@ -127,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Please fill in all fields!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Check if Student ID already exists (MUST BE UNIQUE)
         if (dbHelper.checkStudentIdExists(studentId)) {
             Toast.makeText(this, "Error: Student ID must be unique! This ID already exists.", Toast.LENGTH_LONG).show();
             return;
@@ -143,8 +123,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to Add Student!", Toast.LENGTH_SHORT).show();
         }
     }
-
-    // EDIT Student
     private void editStudent() {
         String name = etStudentName.getText().toString().trim();
         String studentId = etStudentId.getText().toString().trim();
@@ -154,8 +132,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter Student ID and Name to edit!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Check if Student ID exists in database
         if (!dbHelper.checkStudentIdExists(studentId)) {
             Toast.makeText(this, "Error: Student ID not found!", Toast.LENGTH_SHORT).show();
             return;
@@ -170,8 +146,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to Update Student!", Toast.LENGTH_SHORT).show();
         }
     }
-
-    // DELETE Student
     private void deleteStudent() {
         String studentId = etStudentId.getText().toString().trim();
 
@@ -179,8 +153,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter Student ID to delete!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Check if Student ID exists in database
         if (!dbHelper.checkStudentIdExists(studentId)) {
             Toast.makeText(this, "Error: Student ID not found!", Toast.LENGTH_SHORT).show();
             return;
@@ -195,8 +167,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to Delete Student!", Toast.LENGTH_SHORT).show();
         }
     }
-
-    // VIEW Students in Popup Dialog
     private void viewStudents() {
         Cursor cursor = dbHelper.getAllStudents();
         if (cursor.getCount() == 0) {
@@ -218,8 +188,6 @@ public class MainActivity extends AppCompatActivity {
 
         showDialog("All Student Records", builder.toString());
     }
-
-    // Load Data into ListView
     private void loadStudentData() {
         studentList.clear();
         Cursor cursor = dbHelper.getAllStudents();
@@ -233,15 +201,11 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         listAdapter.notifyDataSetChanged();
     }
-
-    // Clear input fields
     private void clearFields() {
         etStudentName.setText("");
         etStudentId.setText("");
         spinnerMajor.setSelection(0);
     }
-
-    // Show Dialog Popup
     private void showDialog(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
